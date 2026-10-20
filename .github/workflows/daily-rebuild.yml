@@ -1,0 +1,19 @@
+# Rebuilds the storefront every night so sitemap.xml and the prerendered product/blog pages
+# never lag behind the database (backup for the instant rebuild the API triggers on changes).
+# Setup: GitHub repo -> Settings -> Secrets and variables -> Actions -> New secret
+#        VERCEL_DEPLOY_HOOK_URL = the Deploy Hook URL of the FRONTEND Vercel project.
+name: Daily storefront rebuild
+on:
+  schedule:
+    - cron: '30 20 * * *' # 02:00 IST
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          test -n "$HOOK" || { echo "VERCEL_DEPLOY_HOOK_URL secret is not set"; exit 1; }
+          curl -fsS -X POST "$HOOK"

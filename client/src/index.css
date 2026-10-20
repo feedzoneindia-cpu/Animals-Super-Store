@@ -1,0 +1,368 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* =====================================================================
+   DESIGN TOKENS
+   Premium light theme. Every component uses the Tailwind scales below
+   (brand-*, accent-*, gray-*), so changing a value here restyles the
+   whole app.
+   Palette: forest #173D32 (brand-700), sand #E8DCC5 (brand-100 / borders),
+   gold #C49A59 (accent-500), cream #FAF7F0 (page background).
+   ===================================================================== */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Brand — forest green with sand tints. 700 (#173D32) is the main action
+     colour; 100 is the sand surface (#E8DCC5 = 200 for borders/text on dark). */
+  --color-brand-50: #f6f1e6;
+  --color-brand-100: #efe6d3;
+  --color-brand-200: #e8dcc5;  /* sand */
+  --color-brand-300: #a9bfb2;
+  --color-brand-400: #6f9484;
+  --color-brand-500: #3f6d5b;
+  --color-brand-600: #2b5545;
+  --color-brand-700: #173d32;  /* forest — primary brand */
+  --color-brand-800: #122f27;
+  --color-brand-900: #0e261f;
+  --color-brand-950: #09190f;
+
+  /* Secondary accent — antique gold. Use 500 for fills and decoration;
+     700 when gold is used as text on a light background (contrast). */
+  --color-accent-50: #fbf7ee;
+  --color-accent-100: #f5ebd5;
+  --color-accent-200: #ebd7af;
+  --color-accent-300: #dec08a;
+  --color-accent-400: #d1aa6f;
+  --color-accent-500: #c49a59;  /* gold */
+  --color-accent-600: #a87f40;
+  --color-accent-700: #876532;
+
+  /* Neutrals — warm cream/sand. gray-900 = primary text (forest), gray-500 =
+     secondary text, gray-200 = borders (sand), gray-50 = page background. */
+  --color-gray-50: #faf7f0;    /* cream */
+  --color-gray-100: #f3ede0;
+  --color-gray-200: #e8dcc5;   /* sand */
+  --color-gray-300: #d4c5a6;
+  --color-gray-400: #9c9784;
+  --color-gray-500: #6b6a5c;
+  --color-gray-600: #4f5650;
+  --color-gray-700: #36443d;
+  --color-gray-800: #24352d;
+  --color-gray-900: #173d32;
+  --color-gray-950: #0e261f;
+
+  /* Surfaces: a warm white so cards sit softly on the cream page. */
+  --color-white: #fffdf8;
+
+  /* Legacy "earth" scale maps onto the cream/sand/forest palette. */
+  --color-earth-50: #faf7f0;
+  --color-earth-100: #f3ede0;
+  --color-earth-200: #e8dcc5;
+  --color-earth-300: #d4c5a6;
+  --color-earth-600: #6b6a5c;
+  --color-earth-800: #36443d;
+  --color-earth-900: #173d32;
+
+  /* Status colours */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;  /* success */
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-green-600: #16a34a;
+  --color-amber-600: #d97706;  /* warning */
+  --color-red-600: #dc2626;    /* error */
+
+  /* Radii: 10px – 20px */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.25rem;
+
+  /* Soft, forest-tinted shadows */
+  --shadow-xs: 0 1px 2px rgb(23 61 50 / 0.05);
+  --shadow-sm: 0 1px 2px rgb(23 61 50 / 0.06), 0 1px 3px rgb(23 61 50 / 0.06);
+  --shadow-md: 0 6px 16px -4px rgb(23 61 50 / 0.1), 0 2px 6px -2px rgb(23 61 50 / 0.06);
+  --shadow-lg: 0 16px 32px -10px rgb(23 61 50 / 0.22), 0 4px 10px -4px rgb(23 61 50 / 0.08);
+  --shadow-xl: 0 24px 48px -14px rgb(23 61 50 / 0.3), 0 8px 16px -8px rgb(23 61 50 / 0.1);
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-in: fade-in 0.25s ease-out backwards;
+  --animate-fade-up: fade-up 0.45s var(--ease-out-soft) backwards;
+  --animate-scale-in: scale-in 0.22s var(--ease-out-soft) backwards;
+  --animate-slide-in-right: slide-in-right 0.32s var(--ease-out-soft) backwards;
+  --animate-slide-down: slide-down 0.22s var(--ease-out-soft) backwards;
+  --animate-page-in: page-in 0.35s var(--ease-out-soft) backwards;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes scale-in { from { opacity: 0; transform: translateY(8px) scale(0.97); } to { opacity: 1; transform: none; } }
+  @keyframes slide-in-right { from { transform: translateX(100%); } to { transform: none; } }
+  @keyframes slide-down { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  @keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  /* NOTE: animations use fill-mode `backwards` and end on `transform: none`, so
+     no transform lingers afterwards (a lingering transform would break
+     position: fixed dialogs and sticky elements inside animated parents). */
+  @keyframes shimmer { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+}
+
+/* =====================================================================
+   DARK THEME
+   Every component reads colours from the scales above, so re-pointing the
+   scales under `html.dark` restyles the whole app. The class is toggled by
+   ThemeContext (Admin → Settings → Appearance).
+   ===================================================================== */
+html.dark {
+  color-scheme: dark;
+
+  --color-white: #1a211d;
+  --color-gray-50: #101512;
+  --color-gray-100: #171e1a;
+  --color-gray-200: #27332c;
+  --color-gray-300: #36463c;
+  --color-gray-400: #7f8c84;
+  --color-gray-500: #9ba8a0;
+  --color-gray-600: #b4bfb8;
+  --color-gray-700: #cbd5cf;
+  --color-gray-800: #e0e6e2;
+  --color-gray-900: #f1f4f2;
+  --color-gray-950: #ffffff;
+
+  --color-brand-50: #17231e;
+  --color-brand-100: #1d2c25;
+  --color-brand-200: #29392f;
+  --color-brand-300: #3d5c4d;
+  --color-brand-400: #5f8a75;
+  --color-brand-500: #6fa088;
+  --color-brand-600: #5d9a80;
+  --color-brand-700: #3f7a62;
+  --color-brand-800: #62a287;
+  --color-brand-900: #cfe2d8;
+
+  --color-accent-50: #231e14;
+  --color-accent-100: #2f2819;
+  --color-accent-700: #d1aa6f;
+
+  --color-earth-50: #101512;
+  --color-earth-100: #171e1a;
+  --color-earth-200: #27332c;
+  --color-earth-300: #36463c;
+  --color-earth-600: #9ba8a0;
+  --color-earth-800: #e0e6e2;
+  --color-earth-900: #f1f4f2;
+
+  --color-success-50: #11231a;
+  --color-success-100: #153021;
+  --color-success-200: #1d4a31;
+}
+html.dark .surface-hero {
+  background:
+    radial-gradient(60rem 28rem at 85% -10%, rgb(196 154 89 / 0.12), transparent 60%),
+    linear-gradient(180deg, #1a211d 0%, #101512 100%);
+}
+html.dark .splash-screen { background: #101512; }
+html.dark .splash-screen__title { color: #f1f4f2; }
+html.dark .splash-screen__bar { background: #27332c; }
+html.dark img { filter: brightness(0.92); }
+/* `white` is a dark surface in dark mode, so text/fills that must stay white are pinned. */
+html.dark .text-white { color: #fff; }
+html.dark .text-emerald-800 { color: #7fb39b; }
+html.dark .text-emerald-950 { color: #cfe2d8; }
+html.dark .bg-\[\#fffdf8\] { background-color: var(--color-white); }
+
+/* =====================================================================
+   BASE
+   ===================================================================== */
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  @apply bg-gray-50 text-gray-900 antialiased;
+  font-feature-settings: "cv11", "ss01";
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -0.015em; }
+p { text-wrap: pretty; }
+img { max-width: 100%; }
+
+::selection { background: var(--color-brand-200); color: var(--color-brand-950); }
+
+/* One consistent, always-visible keyboard focus indicator. */
+:focus-visible {
+  outline: 2px solid var(--color-brand-700);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Comfortable touch targets for form fields on phones; also stops iOS
+   zooming into inputs smaller than 16px. */
+@media (max-width: 639px) {
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 16px; }
+}
+
+/* Hide every scrollbar (page, modals, menus, tables) — scrolling itself
+   still works with wheel, touch, keyboard and trackpad. */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* =====================================================================
+   MOTION UTILITIES
+   ===================================================================== */
+
+/* Staggered entrance for any grid/list: children fade up one after another.
+   Works for asynchronously rendered children too (runs on mount). */
+.stagger > * { animation: fade-up 0.5s var(--ease-out-soft) backwards; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 60ms; }
+.stagger > *:nth-child(3) { animation-delay: 120ms; }
+.stagger > *:nth-child(4) { animation-delay: 180ms; }
+.stagger > *:nth-child(5) { animation-delay: 240ms; }
+.stagger > *:nth-child(6) { animation-delay: 300ms; }
+.stagger > *:nth-child(7) { animation-delay: 360ms; }
+.stagger > *:nth-child(n+8) { animation-delay: 420ms; }
+
+/* Scroll-triggered reveal using native scroll-driven animations. Browsers
+   without support simply show the content (no JS, no layout shift). */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fade-up linear backwards;
+    animation-timeline: view();
+    animation-range: entry 5% entry 40%;
+  }
+}
+
+/* Interactive card: gentle lift + soft shadow. */
+.card-lift {
+  transition: transform 0.25s var(--ease-out-soft), box-shadow 0.25s var(--ease-out-soft), border-color 0.2s ease;
+}
+@media (hover: hover) {
+  .card-lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--color-brand-200); }
+}
+
+/* Soft hero / feature gradient surfaces (used sparingly). */
+.surface-hero {
+  background:
+    radial-gradient(60rem 28rem at 85% -10%, rgb(196 154 89 / 0.22), transparent 60%),
+    radial-gradient(48rem 24rem at 0% 0%, rgb(23 61 50 / 0.08), transparent 60%),
+    linear-gradient(180deg, #fffdf8 0%, #faf7f0 100%);
+}
+.surface-brand {
+  background:
+    radial-gradient(34rem 16rem at 100% 0%, rgb(196 154 89 / 0.38), transparent 62%),
+    linear-gradient(135deg, #173d32 0%, #21513f 100%);
+}
+.text-gradient {
+  background: linear-gradient(90deg, var(--color-brand-700), var(--color-accent-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Skeletons: calm opacity pulse instead of a harsh flash. */
+.animate-pulse { animation: shimmer 1.6s ease-in-out infinite; }
+
+/* Respect reduced-motion everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { animation: none !important; }
+  .card-lift:hover { transform: none; }
+}
+
+/* =====================================================================
+   FIRST-VISIT SPLASH SCREEN
+   ===================================================================== */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(40rem 24rem at 80% 0%, rgb(196 154 89 / 0.24), transparent 60%),
+    radial-gradient(36rem 22rem at 10% 100%, rgb(23 61 50 / 0.1), transparent 60%),
+    #faf7f0;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+}
+.splash-screen--hide { opacity: 0; pointer-events: none; }
+.splash-screen__inner { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px; }
+.splash-screen__logo {
+  width: 132px; height: 132px; object-fit: contain;
+  /* Transparent logo: the shadow follows the artwork's own outline, not a box. */
+  filter: drop-shadow(0 14px 16px rgb(23 61 50 / 0.28)) drop-shadow(0 3px 4px rgb(0 0 0 / 0.18));
+  animation: splash-pop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.splash-screen__title {
+  margin-top: 22px; font-size: clamp(1.5rem, 5vw, 1.85rem); font-weight: 800; letter-spacing: -0.02em; color: #173d32;
+  animation: splash-rise 0.7s 0.35s ease both;
+}
+.splash-screen__title span { color: #a87f40; }
+.splash-screen__tag { margin-top: 6px; font-size: 0.95rem; color: #6b6a5c; animation: splash-rise 0.7s 0.55s ease both; }
+.splash-screen__bar { margin-top: 28px; width: 220px; height: 8px; border-radius: 9999px; background: #e8dcc5; overflow: hidden; box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.08); }
+.splash-screen__bar span {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, #173d32, #c49a59);
+}
+.splash-screen__percent { margin-top: 8px; font-size: 0.8rem; font-weight: 600; color: #6b6a5c; font-variant-numeric: tabular-nums; animation: splash-rise 0.7s 0.55s ease both; }
+@keyframes splash-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes splash-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .splash-screen, .splash-screen__logo, .splash-screen__title, .splash-screen__tag, .splash-screen__percent { animation: none; transition: none; }
+}
+
+/* =====================================================================
+   SMOOTH MOTION LAYER
+   ===================================================================== */
+
+/* Every interactive element eases between states instead of snapping.
+   Lives in the base layer so any Tailwind transition-* utility still wins. */
+@layer base {
+  a, button, summary, input, select, textarea, [role="tab"], [role="button"] {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease-out-soft);
+  }
+}
+
+/* Content blocks ease into view once as they approach the viewport (see
+   useScrollReveal). Short travel + early trigger keeps scrolling smooth. */
+.sr-hidden { opacity: 0; transform: translateY(14px); }
+.sr-hidden, .sr-shown {
+  transition: opacity 0.55s var(--ease-out-soft), transform 0.55s var(--ease-out-soft);
+}
+.sr-shown { opacity: 1; transform: none; }
+
+/* Every image fades in when decoded. The transition list also covers
+   transform so hover zooms on the same element stay smooth. */
+.img-fade {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-duration: 0.5s, 0.7s;
+  transition-timing-function: var(--ease-out-soft);
+}
+.img-fade.is-loaded { opacity: 1; }
+
+/* Gold underline that slides in under a link on hover/focus. */
+.link-gold {
+  background: linear-gradient(var(--color-accent-500), var(--color-accent-500)) 0 100% / 0 2px no-repeat;
+  transition: background-size 0.3s var(--ease-out-soft), color 0.2s ease;
+}
+.link-gold:hover, .link-gold:focus-visible { background-size: 100% 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-hidden, .sr-shown { opacity: 1; transform: none; transition: none; }
+  .img-fade { opacity: 1; transition: none; }
+}

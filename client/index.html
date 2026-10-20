@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animals Super Store — Everything for Goats. One Place.</title>
+    <meta
+      name="description"
+      content="Discover goat-related products, feed, accessories, equipment and practical farming guides—all in one place at Animals Super Store."
+    />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#173d32" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Animals Super Store" />
+    <meta property="og:title" content="Animals Super Store — Everything for Goats. One Place." />
+    <meta property="og:description" content="Goat-related products, feed, accessories, equipment and practical farming guides in one place." />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:image:alt" content="Animals Super Store logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animals Super Store — Everything for Goats. One Place." />
+    <meta name="twitter:description" content="Goat-related products, feed, accessories, equipment and practical farming guides in one place." />
+    <!-- Per-page canonical, og:url, og:image, JSON-LD and crawlable content are written into
+         dist/ at build time by seo/siteSeoPlugin.js (needs VITE_SITE_URL). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" /></noscript>
+    <style>
+      /* Prerendered text for crawlers; React replaces it on boot. Visually hidden so it can never cause layout shift. */
+      .seo-static{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    </style>
+    <script>
+      // Apply the saved theme before first paint so dark mode never flashes light.
+      try {
+        var t = localStorage.getItem('Animals_super_store_theme') || 'system';
+        var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <h1>Animals Super Store — Everything for Goats. One Place.</h1>
+      <p>Goat feed, supplements, accessories, equipment and practical farming guides. Please enable JavaScript to browse the store.</p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
